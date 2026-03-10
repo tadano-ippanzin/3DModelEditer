@@ -1,1 +1,67 @@
-d
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>3DME</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #111; font-family: sans-serif; touch-action: none; }
+        canvas { display: block; }
+        .ui-panel { position: absolute; top: 10px; left: 10px; display: flex; flex-direction: column; gap: 5px; max-width: 140px; z-index: 100; }
+        .toolbar { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 100; }
+        section-label { color: #888; font-size: 10px; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        button { 
+            padding: 10px; font-size: 13px; border-radius: 6px; border: none;
+            background: rgba(255,255,255,0.15); color: white; backdrop-filter: blur(5px);
+            cursor: pointer;
+        }
+        button:active { background: rgba(255,255,255,0.3); }
+        button.active { background: #007bff; font-weight: bold; }
+        .color-input { 
+            padding: 8px; border-radius: 5px; border: 1px solid #444; 
+            background: #222; color: #fff; font-size: 12px; width: 100%; box-sizing: border-box;
+        }
+        .del-btn { background: rgba(255, 50, 50, 0.5); margin-top: 5px; }
+        input[type="file"] { display: none; }
+    </style>
+</head>
+<body>
+    <div class="ui-panel">
+        <section-label>3D Shapes</section-label>
+        <button onclick="createShape('cube')">立方体</button>
+        <button onclick="createShape('sphere')">球体</button>
+        <button onclick="createShape('rod')">棒(円柱)</button>
+        
+        <section-label>2D Shapes</section-label>
+        <button onclick="createShape('plane')">四角(板)</button>
+        <button onclick="createShape('circle')">円</button>
+        <button onclick="createShape('poly')">多角形</button>
+        <button onclick="createShape('line')">線</button>
+        
+        <section-label>Properties</section-label>
+        <input type="text" id="color-hex" class="color-input" placeholder="#HEX (4/8桁)" onchange="updateColor(this.value)">
+        <button class="del-btn" onclick="deleteObject()">選択削除</button>
+        
+        <section-label>File</section-label>
+        <button onclick="downloadScene()">保存(DL)</button>
+        <button onclick="document.getElementById('ul-input').click()">読込(UL)</button>
+        <input type="file" id="ul-input" onchange="uploadScene(event)">
+    </div>
+
+    <div class="toolbar">
+        <button id="btn-t" class="active" onclick="setMode('translate')">移動</button>
+        <button id="btn-r" onclick="setMode('rotate')">回転</button>
+        <button id="btn-s" onclick="setMode('scale')">拡大</button>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="main.js"></script>
+</body>
+</html>
